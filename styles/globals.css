@@ -1,4 +1,64 @@
 /* styles/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base layer: resets, typography, global elements */
+@layer base {
+  html {
+    @apply box-border antialiased;
+  }
+  *,
+  *::before,
+  *::after {
+    @apply box-border;
+  }
+  body {
+    @apply bg-green-50 text-gray-800 font-sans;
+  }
+  a {
+    @apply text-green-600 hover:text-green-700 transition-colors;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+}
+
+/* Components layer: reusable custom classes */
+@layer components {
+  .container {
+    @apply mx-auto px-4 md:px-8 max-w-screen-xl;
+  }
+  .btn {
+    @apply inline-block bg-green-600 text-white font-medium py-2 px-4 rounded-xl shadow hover:bg-green-700 transition;
+  }
+  .btn-secondary {
+    @apply inline-block bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-xl shadow hover:bg-gray-300 transition;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm overflow-hidden transition-shadow;
+  }
+  .card:hover {
+    @apply shadow-lg;
+  }
+  .heading-underline {
+    @apply inline-block border-b-4 border-green-600 pb-1;
+  }
+}
+
+/* Utilities layer: extra utility classes */
+@layer utilities {
+  .scrollbar-hide {
+    &::-webkit-scrollbar {
+      @apply hidden;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

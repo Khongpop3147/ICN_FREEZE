@@ -1,3 +1,3 @@
-// pages/api/auth/register.ts
-import { registerHandler } from "../../../controllers/authController";
-export default registerHandler;
+// pages/api/auth/login.ts
+import { loginHandler } from "../../../controllers/authController";
+export default loginHandler;

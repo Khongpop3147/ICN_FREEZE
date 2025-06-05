@@ -18,6 +18,7 @@ model User {
   orders       Order[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  passwordResetTokens  PasswordResetToken[]
 }
 
 model Category {
@@ -33,8 +34,10 @@ model Product {
   name        String
   description String?
   price       Float
+  salePrice   Float?
   imageUrl    String?
   stock       Int       @default(0)
+  isFeatured   Boolean  @default(false)  
   category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  String?
   orderItems  OrderItem[]
@@ -48,6 +51,7 @@ model Cart {
   user      User       @relation(fields: [userId], references: [id])
   userId    String     @unique
   items     CartItem[]
+  createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
 
@@ -58,21 +62,35 @@ model CartItem {
   product   Product  @relation(fields: [productId], references: [id])
   productId String
   quantity  Int      @default(1)
+
+  @@unique([cartId, productId])
 }
+
 
 model Order {
   id            String      @id @default(uuid())
   user          User        @relation(fields: [userId], references: [id])
   userId        String
+  recipient     String
+  line1         String
+  line2         String?
+  line3         String? 
+  city          String
+  postalCode    String?
+  country       String
   status        String      @default("PENDING")
   totalAmount   Float
   paymentMethod String?
+  slipUrl       String?     // เพิ่มตรงนี้เพื่อเก็บลิงก์สลิป
   items         OrderItem[]
   coupon        Coupon?     @relation(fields: [couponId], references: [id])
   couponId      String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }
+
+
+
 
 model OrderItem {
   id              String   @id @default(uuid())
@@ -89,7 +107,7 @@ model Coupon {
   code          String   @unique
   discountType  String
   discountValue Float
-  usageLimit    Int?     
+  usageLimit    Int?
   usedCount     Int      @default(0)
   expiresAt     DateTime?
   orders        Order[]
@@ -108,10 +126,58 @@ model Address {
 }
 
 model AuditLog {
-  id        String   @id @default(uuid())
-  action    String
-  entity    String
-  entityId  String
+  id          String   @id @default(uuid())
+  action      String
+  entity      String
+  entityId    String
   performedBy String
-  timestamp DateTime @default(now())
+  timestamp   DateTime @default(now())
+}
+
+model Faq {
+  id         String   @id @default(uuid())
+  question   String
+  answer     String?  // ถ้ายังไม่มีคำตอบ ให้เป็น null
+  createdAt  DateTime @default(now())
+}
+
+model Banner {
+  id        String   @id @default(uuid())
+  title     String?
+  description String?
+  sub       String?
+  imageUrl  String
+  order     Int      @default(0)
+  position  String   @default("hero")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Supplier {
+  id           String   @id @default(uuid())
+  companyName  String
+  productName  String
+  stock        Int      @default(0)
+  unitPrice    Float    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SubBanner {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  buttonText  String
+  buttonLink  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
