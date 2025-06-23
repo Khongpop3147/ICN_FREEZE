@@ -28,7 +28,7 @@ export default async function handler(
     }
 
     try {
-      // ตรวจสอบสิทธิ์
+      // // // ตรวจสอบสิทธิ์
       const authHeader = req.headers.authorization;
       const user = await getUserFromToken(authHeader);
       if (!user) {

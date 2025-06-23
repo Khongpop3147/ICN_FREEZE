@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) =>
 export default function HomeManagePage() {
   const [tab, setTab] = useState<
     "product" | "category" | "banner" | "subbanner"
-  >("banner");
+  >("product");
   const { user, logout } = useAuth();
   const router = useRouter();
 
